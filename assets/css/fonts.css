@@ -1,0 +1,153 @@
+/* Kasaami Care & Beauty - Fonts CSS
+ * Archivo CSS reutilizable para fuentes Filson Pro
+ * Usar en todas las páginas del sitio
+ */
+
+/* Filson Pro Font Family */
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProRegular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProRegularItalic.otf') format('opentype');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProThin.otf') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProThinItalic.otf') format('opentype');
+    font-weight: 100;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProLight.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProLightItalic.otf') format('opentype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProBook.otf') format('opentype');
+    font-weight: 350;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProBookItalic.otf') format('opentype');
+    font-weight: 350;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProMedium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProMediumItalic.otf') format('opentype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProBold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProBoldItalic.otf') format('opentype');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProHeavy.otf') format('opentype');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProHeavyItalic.otf') format('opentype');
+    font-weight: 800;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProBlack.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Filson Pro';
+    src: url('../fuentes/FilsonProBlackItalic.otf') format('opentype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* CSS Utility Classes */
+.font-filson {
+    font-family: 'Filson Pro', system-ui, -apple-system, sans-serif;
+}
+
+/* Body default font */
+body {
+    font-family: 'Filson Pro', system-ui, -apple-system, sans-serif;
+}
+
+/* Font weight utilities specifically for Filson Pro */
+.filson-thin { font-weight: 100; }
+.filson-light { font-weight: 300; }
+.filson-book { font-weight: 350; }
+.filson-regular { font-weight: 400; }
+.filson-medium { font-weight: 500; }
+.filson-bold { font-weight: 700; }
+.filson-heavy { font-weight: 800; }
+.filson-black { font-weight: 900; }

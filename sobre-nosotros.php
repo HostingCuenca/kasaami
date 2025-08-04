@@ -1,6 +1,7 @@
 <?php
 // pages/sobre-nosotros.php
-$pageTitle = "Sobre Nosotros - Kasaami Care & Beauty";
+require_once('includes/init-language.php');
+$pageTitle = "Esencia Kasaami - Kasaami Care & Beauty";
 $currentLang = $_GET['lang'] ?? 'es';
 
 // Language content
@@ -12,39 +13,23 @@ $content = [
             'procedures' => 'Procedimientos'
         ],
         'hero' => [
-            'title' => 'Sobre Nosotros',
-            'subtitle' => 'Tu transformación comienza en el corazón de los Andes'
+            'title' => 'En Kasaami Somos Salud con Alma',
+            'subtitle' => 'Nuestra esencia es el equilibrio entre lo estético y lo vital. Combinamos ciencia, arte y hospitalidad para que tu transformación sea segura, profunda y significativa. Porque verte bien empieza por sentirte bien.'
         ],
         'intro' => [
-            'title' => 'Turismo Médico y Estético en Ecuador',
-            'description' => 'KASAAMI Care & Beauty es su aliado en turismo médico y estético en Ecuador. Con 6 años de experiencia, ofrecemos una experiencia integral de hospitalidad, bienestar y transformación, fusionando cuidado humano, excelencia profesional y el poder sanador de nuestro país.',
-            'highlight' => 'Nuestros servicios todo incluido cubren cirugías de primer nivel, medicina premium, traslados seguros y cuidado pre/postoperatorio, con opciones de turismo y bienestar.'
-        ],
-        'essence' => [
-            'title' => 'Nuestra Esencia',
-            'values' => [
-                [
-                    'icon' => 'heart',
-                    'title' => 'Cuidado Humano',
-                    'description' => 'Brindamos un servicio integral, centrado en el bienestar y la mejora continua, entendiendo que la transformación es un proceso holístico.'
-                ],
-                [
-                    'icon' => 'star',
-                    'title' => 'Excelencia Profesional',
-                    'description' => 'Combinamos la experiencia médica de primer nivel con un equipo altamente dedicado, garantizando los más altos estándares de calidad.'
-                ],
-                [
-                    'icon' => 'mountain',
-                    'title' => 'El Poder de Ecuador',
-                    'description' => 'Aprovechamos el entorno natural y cultural de Ecuador para ofrecer una experiencia única de sanación y transformación.'
-                ]
-            ]
+            'title' => 'Nuestro Camino de Cuidado',
+            'description' => 'En Kasaami, tu proceso de transformación va más allá del procedimiento médico. Integramos tu recuperación con experiencias exclusivas de turismo médico en Ecuador y bienestar integral, asegurando que tu estadía sea reparadora y enriquecedora. Te acompañamos en cada paso, desde la gestión de trámites médicos hasta actividades diseñadas para potenciar tu recuperación física y emocional en un entorno natural privilegiado.'
         ],
         'mission' => [
-            'title' => 'Nuestra Misión',
-            'description' => 'Ser el puente que conecta a pacientes internacionales con la excelencia médica ecuatoriana, proporcionando experiencias transformadoras que van más allá de la cirugía, integrando bienestar, cultura y la magia natural de los Andes.',
-            'vision_title' => 'Nuestra Visión',
-            'vision_description' => 'Posicionar a Ecuador como el destino líder en turismo médico de Latinoamérica, siendo reconocidos por nuestra calidez humana, innovación médica y experiencias integrales de transformación.'
+            'title' => 'El Futuro que Imaginamos',
+            'subtitle' => 'Sanar con propósito, transformar con sentido',
+            'intro' => 'En KASAAMI, soñamos con redefinir el turismo médico en América Latina y posicionar a Ecuador como un destino líder en salud y belleza, ofreciendo experiencias médicas integrales que nutren el cuerpo, el alma y la identidad.',
+            'vision' => 'Visualizamos un mundo donde pacientes internacionales viajan a Ecuador para sanar y vuelven transformados, no solo por los resultados clínicos, sino por la experiencia vivida, acompañamiento profesional y bienestar emocional.',
+            'commitment' => 'Queremos que cada historia atendida en KASAAMI deje una huella profunda: confianza, belleza y renovación. Nos comprometemos a poner a Ecuador en los ojos del mundo, mostrando su excelencia en tratamientos médicos, su cultura única y la energía sanadora de los Andes a través de cada experiencia que ofrecemos.'
+        ],
+        'commitment' => [
+            'title' => 'Nuestro Compromiso de Transformación',
+            'description' => 'Ser el puente confiable que conecta a pacientes internacionales con la excelencia médica de Ecuador, ofreciendo experiencias de transformación que trascienden la cirugía. Integramos bienestar, riqueza cultural y energía sanadora de los Andes para acompañarte en cada paso de tu renovación. Cuidarte es nuestra misión.'
         ],
         'stats' => [
             'title' => 'Nuestros Números',
@@ -54,11 +39,6 @@ $content = [
                 ['number' => '15+', 'label' => 'Países de Origen'],
                 ['number' => '6', 'label' => 'Años de Experiencia']
             ]
-        ],
-        'team' => [
-            'title' => 'Nuestro Equipo',
-            'subtitle' => 'Profesionales dedicados a tu transformación',
-            'description' => 'Contamos con un equipo multidisciplinario de especialistas médicos, coordinadores de experiencia, y profesionales en hospitalidad, todos unidos por el compromiso de brindar la mejor atención integral.'
         ],
         'footer' => [
             'description' => 'Tu transformación comienza en el corazón de los Andes. Experimenta la excelencia médica en Ecuador con nuestros especialistas de clase mundial.',
@@ -82,39 +62,23 @@ $content = [
             'procedures' => 'Procedures'
         ],
         'hero' => [
-            'title' => 'About Us',
-            'subtitle' => 'Your transformation begins in the heart of the Andes'
+            'title' => 'At Kasaami We Are Health with Soul',
+            'subtitle' => 'Our essence is the balance between the aesthetic and the vital. We combine science, art and hospitality so that your transformation is safe, profound and meaningful. Because looking good starts with feeling good.'
         ],
         'intro' => [
-            'title' => 'Medical and Aesthetic Tourism in Ecuador',
-            'description' => 'KASAAMI Care & Beauty is your ally in medical and aesthetic tourism in Ecuador. With 6 years of experience, we offer a comprehensive experience of hospitality, wellness and transformation, merging human care, professional excellence and the healing power of our country.',
-            'highlight' => 'Our all-inclusive services cover premier surgeries, premium medicine, safe transfers and pre/post-operative care, with tourism and wellness options.'
-        ],
-        'essence' => [
-            'title' => 'Our Essence',
-            'values' => [
-                [
-                    'icon' => 'heart',
-                    'title' => 'Human Care',
-                    'description' => 'We provide comprehensive service, focused on wellness and continuous improvement, understanding that transformation is a holistic process.'
-                ],
-                [
-                    'icon' => 'star',
-                    'title' => 'Professional Excellence',
-                    'description' => 'We combine first-level medical experience with a highly dedicated team, guaranteeing the highest quality standards.'
-                ],
-                [
-                    'icon' => 'mountain',
-                    'title' => 'The Power of Ecuador',
-                    'description' => 'We leverage Ecuador\'s natural and cultural environment to offer a unique healing and transformation experience.'
-                ]
-            ]
+            'title' => 'Our Path of Care',
+            'description' => 'At Kasaami, your transformation process goes beyond the medical procedure. We integrate your recovery with exclusive medical tourism experiences in Ecuador and comprehensive wellness, ensuring your stay is restorative and enriching. We accompany you every step of the way, from managing medical procedures to activities designed to enhance your physical and emotional recovery in a privileged natural environment.'
         ],
         'mission' => [
-            'title' => 'Our Mission',
-            'description' => 'To be the bridge that connects international patients with Ecuadorian medical excellence, providing transformative experiences that go beyond surgery, integrating wellness, culture and the natural magic of the Andes.',
-            'vision_title' => 'Our Vision',
-            'vision_description' => 'Position Ecuador as the leading medical tourism destination in Latin America, being recognized for our human warmth, medical innovation and comprehensive transformation experiences.'
+            'title' => 'The Future We Imagine',
+            'subtitle' => 'Healing with purpose, transforming with meaning',
+            'intro' => 'At KASAAMI, we dream of redefining medical tourism in Latin America and positioning Ecuador as a leading destination in health and beauty, offering comprehensive medical experiences that nourish the body, soul and identity.',
+            'vision' => 'We envision a world where international patients travel to Ecuador to heal and return transformed, not only by clinical results, but by the lived experience, professional accompaniment and emotional well-being.',
+            'commitment' => 'We want every story attended at KASAAMI to leave a deep mark: confidence, beauty and renewal. We commit to putting Ecuador in the eyes of the world, showing its excellence in medical treatments, its unique culture and the healing energy of the Andes through every experience we offer.'
+        ],
+        'commitment' => [
+            'title' => 'Our Transformation Commitment',
+            'description' => 'To be the reliable bridge that connects international patients with Ecuador\'s medical excellence, offering transformation experiences that transcend surgery. We integrate wellness, cultural richness and healing energy of the Andes to accompany you in every step of your renewal. Caring for you is our mission.'
         ],
         'stats' => [
             'title' => 'Our Numbers',
@@ -124,11 +88,6 @@ $content = [
                 ['number' => '15+', 'label' => 'Countries of Origin'],
                 ['number' => '6', 'label' => 'Years of Experience']
             ]
-        ],
-        'team' => [
-            'title' => 'Our Team',
-            'subtitle' => 'Professionals dedicated to your transformation',
-            'description' => 'We have a multidisciplinary team of medical specialists, experience coordinators, and hospitality professionals, all united by the commitment to provide the best comprehensive care.'
         ],
         'footer' => [
             'description' => 'Your transformation begins in the heart of the Andes. Experience medical excellence in Ecuador with our world-class specialists.',
@@ -161,14 +120,130 @@ $t = $content[$currentLang];
     <meta name="description" content="<?php echo $t['intro']['description']; ?>">
     <meta name="keywords" content="turismo médico, Ecuador, cirugía estética, transformación, hospitalidad">
     <meta name="author" content="Kasaami Care & Beauty">
+
+    <!-- Favicon -->
+<!-- Favicon -->
+    <link rel="icon" type="image/png" href="public/favicon.png">
+    <link rel="shortcut icon" href="public/favicon.png">
+    <link rel="apple-touch-icon" href="public/favicon.png">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Rufina:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Filson Pro Fonts -->
+    <style>
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProRegular.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProRegularItalic.otf') format('opentype');
+            font-weight: 400;
+            font-style: italic;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProThin.otf') format('opentype');
+            font-weight: 100;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProThinItalic.otf') format('opentype');
+            font-weight: 100;
+            font-style: italic;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProLight.otf') format('opentype');
+            font-weight: 300;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProLightItalic.otf') format('opentype');
+            font-weight: 300;
+            font-style: italic;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProBook.otf') format('opentype');
+            font-weight: 350;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProBookItalic.otf') format('opentype');
+            font-weight: 350;
+            font-style: italic;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProMedium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProMediumItalic.otf') format('opentype');
+            font-weight: 500;
+            font-style: italic;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProBold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProBoldItalic.otf') format('opentype');
+            font-weight: 700;
+            font-style: italic;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProHeavy.otf') format('opentype');
+            font-weight: 800;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProHeavyItalic.otf') format('opentype');
+            font-weight: 800;
+            font-style: italic;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProBlack.otf') format('opentype');
+            font-weight: 900;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Filson Pro';
+            src: url('assets/fuentes/FilsonProBlackItalic.otf') format('opentype');
+            font-weight: 900;
+            font-style: italic;
+        }
+    </style>
     
     <!-- Custom Tailwind Config -->
     <script>
@@ -176,8 +251,8 @@ $t = $content[$currentLang];
             theme: {
                 extend: {
                     fontFamily: {
-                        'poppins': ['Poppins', 'sans-serif'],
-                        'rufina': ['Rufina', 'serif']
+                        'filson': ['Filson Pro', 'sans-serif'],
+                        'sans': ['Filson Pro', 'system-ui', 'sans-serif']
                     },
                     colors: {
                         'kasaami': {
@@ -248,7 +323,7 @@ $t = $content[$currentLang];
     <?php include 'includes/Navbar.php'; ?>
 
     <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center parallax" style="background-image: linear-gradient(rgba(139, 92, 246, 0.7), rgba(109, 40, 217, 0.5)), url('https://ecuadorexplorer.com/wp-content/uploads/2023/08/blog1_vista_hermosa_centro_quito_historico.jpg');">
+    <section class="relative min-h-screen flex items-center justify-center parallax" style="background-image: linear-gradient(rgba(139, 92, 246, 0.7), rgba(109, 40, 217, 0.5)), url('assets/fondo.png');">
         <div class="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
             <h1 class="text-5xl md:text-7xl font-rufina font-bold mb-6 animate-slide-up">
                 <?php echo $t['hero']['title']; ?>
@@ -259,100 +334,121 @@ $t = $content[$currentLang];
         </div>
     </section>
 
-    <!-- Introduction Section -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <!-- Content -->
+    <!-- Introduction Section Enhanced -->
+    <section class="py-20 bg-white relative overflow-hidden">
+        <!-- Background decorative elements -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-purple-200 to-blue-100 rounded-full opacity-20 transform translate-x-48 -translate-y-48"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-purple-400 to-purple-200 rounded-full opacity-10 transform -translate-x-32 translate-y-32"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Main Title Section -->
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl font-rufina font-bold text-gray-900 mb-6">
+                    <?php echo $t['intro']['title']; ?>
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-kasaami-violet to-kasaami-gold mx-auto mb-8"></div>
+            </div>
+
+            <!-- Enhanced Content Grid - SIN RECUADRO BLANCO -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
+                <!-- Content - SIN RECUADRO -->
                 <div class="space-y-8">
-                    <h2 class="text-4xl md:text-5xl font-rufina font-bold text-gray-900 mb-6">
-                        <?php echo $t['intro']['title']; ?>
-                    </h2>
-                    <p class="text-lg text-gray-600 leading-relaxed">
+                    <p class="text-xl text-gray-700 leading-relaxed">
                         <?php echo $t['intro']['description']; ?>
                     </p>
-                    <div class="bg-kasaami-pearl p-6 rounded-xl border-l-4 border-kasaami-violet">
-                        <p class="text-gray-700 font-medium italic">
-                            <?php echo $t['intro']['highlight']; ?>
-                        </p>
-                    </div>
                 </div>
                 
-                <!-- Image -->
+                <!-- Enhanced Image Section -->
                 <div class="relative">
-                    <img src="https://ecuadorexplorer.com/wp-content/uploads/2023/08/blog1_vista_hermosa_centro_quito_historico.jpg" 
-                         alt="Quito - Centro de Ecuador" 
-                         class="rounded-2xl shadow-2xl hover-lift w-full">
-                    <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-kasaami-violet to-kasaami-light-violet rounded-full opacity-20"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Our Essence Section -->
-    <section class="py-20 bg-kasaami-pearl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-rufina font-bold text-gray-900 mb-6">
-                    <?php echo $t['essence']['title']; ?>
-                </h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <?php foreach ($t['essence']['values'] as $value): ?>
-                <div class="text-center hover-lift bg-white p-8 rounded-2xl shadow-lg">
-                    <!-- Icon -->
-                    <div class="w-16 h-16 bg-gradient-to-br from-kasaami-violet to-kasaami-dark-violet rounded-full flex items-center justify-center mx-auto mb-6">
-                        <?php if ($value['icon'] === 'heart'): ?>
-                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                            </svg>
-                        <?php elseif ($value['icon'] === 'star'): ?>
-                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                            </svg>
-                        <?php else: ?>
-                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M14 6l-3.75 5 2.85 3.8-1.6 1.2C9.81 13.75 7 10 7 10l-6 8h22l-9-12z"/>
-                            </svg>
-                        <?php endif; ?>
+                    <!-- Marco elegante con degradado limpio -->
+                    <div class="bg-gradient-to-br from-kasaami-pearl via-white to-kasaami-light-violet p-6 rounded-3xl shadow-2xl">
+                        <!-- Imagen principal -->
+                        <div class="relative overflow-hidden rounded-2xl">
+                            <img src="assets/fotodestacada.png" 
+                                 alt="Kasaami Care & Beauty - Excelencia Médica" 
+                                 class="w-full h-auto transform hover:scale-105 transition-transform duration-700">
+                            <!-- Overlay sutil para mayor elegancia -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-kasaami-violet/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+                        </div>
                     </div>
                     
-                    <!-- Content -->
-                    <h3 class="text-xl font-rufina font-bold text-gray-900 mb-4">
-                        <?php echo $value['title']; ?>
-                    </h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        <?php echo $value['description']; ?>
-                    </p>
+                    <!-- Elementos decorativos minimalistas -->
+                    <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-gradient-to-br from-kasaami-violet to-kasaami-dark-violet rounded-full opacity-15 blur-sm"></div>
+                    <div class="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-br from-kasaami-light-violet to-kasaami-violet rounded-full opacity-20 blur-sm"></div>
                 </div>
-                <?php endforeach; ?>
+            </div>
+
+            <!-- Experience Highlights -->
+            <div class="relative bg-gradient-to-br from-kasaami-violet via-kasaami-dark-violet to-kasaami-violet rounded-3xl p-8 md:p-12 text-white overflow-hidden">
+                <!-- Elementos decorativos minimalistas -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-32 translate-x-32"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-kasaami-light-violet/10 rounded-full translate-y-24 -translate-x-24"></div>
+                
+                <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-4xl font-rufina font-bold mb-8"><?php echo $t['commitment']['title']; ?></h3>
+                        <p class="text-lg leading-relaxed">
+                            <?php echo $t['commitment']['description']; ?>
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-white/15 rounded-3xl p-8 backdrop-blur-lg border border-white/20 shadow-2xl">
+                            <h4 class="text-3xl font-rufina font-bold mb-6">ECUADOR el Corazón de los Andes</h4>
+                            <p class="text-xl opacity-95 mb-8 leading-relaxed">Combina tu transformación médica con la magia natural y cultural de Ecuador en un ambiente de lujo exclusivo</p>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="text-center bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
+                                    <div class="text-4xl font-bold text-kasaami-light-violet mb-2">2,850m</div>
+                                    <div class="text-sm opacity-90 font-medium">Altitud de Quito</div>
+                                </div>
+                                <div class="text-center bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
+                                    <div class="text-4xl font-bold text-kasaami-light-violet mb-2">365</div>
+                                    <div class="text-sm opacity-90 font-medium">Días de primavera</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Mission & Vision Section -->
+    <!-- Mission Section REDISEÑADA - Banner Style -->
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <!-- Mission -->
-                <div class="space-y-6">
-                    <h2 class="text-3xl md:text-4xl font-rufina font-bold text-gray-900">
-                        <?php echo $t['mission']['title']; ?>
-                    </h2>
-                    <p class="text-lg text-gray-600 leading-relaxed">
-                        <?php echo $t['mission']['description']; ?>
-                    </p>
-                </div>
-                
-                <!-- Vision -->
-                <div class="space-y-6">
-                    <h2 class="text-3xl md:text-4xl font-rufina font-bold text-gray-900">
-                        <?php echo $t['mission']['vision_title']; ?>
-                    </h2>
-                    <p class="text-lg text-gray-600 leading-relaxed">
-                        <?php echo $t['mission']['vision_description']; ?>
-                    </p>
+            <!-- Banner unificado sin tarjetas -->
+            <div class="bg-white rounded-3xl shadow-lg p-8 lg:p-16">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- Image Section - Left Side -->
+                    <div class="order-2 lg:order-1">
+                        <img src="assets/doctorescomp.png" 
+                             alt="Equipo médico Kasaami" 
+                             class="w-full h-auto">
+                    </div>
+                    
+                    <!-- Text Content - Right Side -->
+                    <div class="order-1 lg:order-2 space-y-6">
+                        <h2 class="text-3xl lg:text-5xl font-rufina font-bold text-gray-900 leading-tight">
+                            <?php echo $t['mission']['title']; ?>
+                        </h2>
+                        
+                        <h3 class="text-xl lg:text-2xl font-rufina font-bold text-kasaami-violet">
+                            <?php echo $t['mission']['subtitle']; ?>
+                        </h3>
+                        
+                        <div class="space-y-4 text-gray-700">
+                            <p class="text-lg leading-relaxed">
+                                <?php echo $t['mission']['intro']; ?>
+                            </p>
+                            
+                            <p class="text-lg leading-relaxed">
+                                <?php echo $t['mission']['vision']; ?>
+                            </p>
+                            
+                            <p class="text-lg leading-relaxed">
+                                <?php echo $t['mission']['commitment']; ?>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -378,114 +474,6 @@ $t = $content[$currentLang];
                     </div>
                 </div>
                 <?php endforeach; ?>
-            </div>
-        </div>
-    </section>
-
-    <!-- Team Section -->
-    <section class="py-20 bg-kasaami-pearl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-rufina font-bold text-gray-900 mb-6">
-                    <?php echo $t['team']['title']; ?>
-                </h2>
-                <p class="text-xl text-kasaami-violet font-medium mb-4">
-                    <?php echo $t['team']['subtitle']; ?>
-                </p>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                    <?php echo $t['team']['description']; ?>
-                </p>
-            </div>
-            
-            <!-- Team Grid con Imágenes Reales -->
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                <!-- Doctor 1 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover-lift">
-                    <div class="h-64 overflow-hidden">
-                        <img src="../assets/doctores/doctor.png" alt="Dr. Especialista" class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-6 text-center">
-                        <h3 class="font-rufina font-bold text-gray-900 mb-2">Dr. Carlos Mendoza</h3>
-                        <p class="text-kasaami-violet font-medium">Cirujano Plástico</p>
-                    </div>
-                </div>
-
-                <!-- Doctora 1 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover-lift">
-                    <div class="h-64 overflow-hidden">
-                        <img src="../assets/doctores/dra1.png" alt="Dra. Especialista" class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-6 text-center">
-                        <h3 class="font-rufina font-bold text-gray-900 mb-2">Dra. María González</h3>
-                        <p class="text-kasaami-violet font-medium">Dermatóloga</p>
-                    </div>
-                </div>
-
-                <!-- Cirujano -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover-lift">
-                    <div class="h-64 overflow-hidden">
-                        <img src="../assets/doctores/cirjuano.png" alt="Cirujano" class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-6 text-center">
-                        <h3 class="font-rufina font-bold text-gray-900 mb-2">Dr. Roberto Silva</h3>
-                        <p class="text-kasaami-violet font-medium">Cirujano Estético</p>
-                    </div>
-                </div>
-
-                <!-- Cirujana -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover-lift">
-                    <div class="h-64 overflow-hidden">
-                        <img src="../assets/doctores/cirujana.png" alt="Cirujana" class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-6 text-center">
-                        <h3 class="font-rufina font-bold text-gray-900 mb-2">Dra. Ana Ramírez</h3>
-                        <p class="text-kasaami-violet font-medium">Cirujana Reconstructiva</p>
-                    </div>
-                </div>
-
-                <!-- Doctor 2 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover-lift">
-                    <div class="h-64 overflow-hidden">
-                        <img src="../assets/doctores/doctor2.png" alt="Dr. Especialista 2" class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-6 text-center">
-                        <h3 class="font-rufina font-bold text-gray-900 mb-2">Dr. Luis Herrera</h3>
-                        <p class="text-kasaami-violet font-medium">Otorrinolaringólogo</p>
-                    </div>
-                </div>
-
-                <!-- Especialista Hombre -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover-lift">
-                    <div class="h-64 overflow-hidden">
-                        <img src="../assets/doctores/especialistahombre.png" alt="Especialista" class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-6 text-center">
-                        <h3 class="font-rufina font-bold text-gray-900 mb-2">Dr. Miguel Torres</h3>
-                        <p class="text-kasaami-violet font-medium">Especialista Capilar</p>
-                    </div>
-                </div>
-
-                <!-- Especialista Mujer -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover-lift">
-                    <div class="h-64 overflow-hidden">
-                        <img src="../assets/doctores/especialistamujer.png" alt="Especialista" class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-6 text-center">
-                        <h3 class="font-rufina font-bold text-gray-900 mb-2">Dra. Carmen López</h3>
-                        <p class="text-kasaami-violet font-medium">Especialista en Obesidad</p>
-                    </div>
-                </div>
-
-                <!-- Enfermera -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover-lift">
-                    <div class="h-64 overflow-hidden">
-                        <img src="../assets/doctores/enfermera.png" alt="Enfermera" class="w-full h-full object-cover object-center">
-                    </div>
-                    <div class="p-6 text-center">
-                        <h3 class="font-rufina font-bold text-gray-900 mb-2">Enf. Patricia Vega</h3>
-                        <p class="text-kasaami-violet font-medium">Coordinadora de Cuidados</p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>

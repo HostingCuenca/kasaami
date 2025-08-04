@@ -1,7 +1,22 @@
 <?php
 // contactanos.php
+// Página de contacto completa con CRM integrado
+
+// Initialize language detection first
+require_once(__DIR__ . '/includes/init-language.php');
+
 $pageTitle = "Contacto - Kasaami Care & Beauty";
-$currentLang = $_GET['lang'] ?? 'es';
+
+// DEBUG: Verificar conexión a BD (comentar en producción)
+$debug_db_status = false;
+$debug_db_message = '';
+try {
+    require_once 'includes/database.php';
+    $debug_db_status = Database::testConnection();
+    $debug_db_message = $debug_db_status ? 'BD Conectada' : 'BD Error';
+} catch (Exception $e) {
+    $debug_db_message = 'BD Exception: ' . $e->getMessage();
+}
 
 // Language content
 $content = [
@@ -12,129 +27,243 @@ $content = [
             'procedures' => 'Procedimientos'
         ],
         'hero' => [
-            'title' => 'Contacto',
-            'subtitle' => 'Agenda tu consulta gratuita y personalizada'
+            'title' => 'Contáctanos',
+            'subtitle' => 'Diseñamos experiencias a tu medida. Agenda tu asesoría gratuita y empieza tu viaje con Kasaami.'
         ],
-        'intro' => [
-            'title' => 'Comienza tu transformación',
-            'description' => 'Nuestro equipo de especialistas está listo para acompañarte en cada paso de tu proceso de transformación. Agenda una consulta gratuita y descubre todas las opciones disponibles para ti.',
-            'video_text' => 'Conoce más sobre nuestro proceso y cómo podemos ayudarte a alcanzar tus objetivos de transformación y bienestar.'
+        'video' => [
+            'title' => 'Descubre Nuestro Proceso',
+            'subtitle' => 'Así es como en Kasaami transformamos tu vida en Ecuador.'
+        ],
+        'why_contact' => [
+            'title' => '¿Por qué ponerse en contacto con nosotros?',
+            'subtitle' => 'Diseñamos experiencias a tu medida. Agenda tu asesoría gratuita y empieza tu viaje con Kasaami.',
+            'benefits' => [
+                [
+                    'icon' => 'consultation',
+                    'title' => 'Asesoría Gratuita',
+                    'description' => 'Conversa sin compromiso con un asesor experto en turismo médico.<br>Estamos aquí para escucharte y guiarte.<br>Asesoría inicial sin costo.'
+                ],
+                [
+                    'icon' => 'package',
+                    'title' => 'Primera Consulta de Cortesía',
+                    'description' => 'Comparte tus objetivos y dudas con un especialista que entiende lo que necesitas. Consulta médica y estética sin compromiso, 100% adaptada a ti.'
+                ],
+                [
+                    'icon' => 'privacy',
+                    'title' => 'Paquete Diseñado a Medida',
+                    'description' => 'Recibe una propuesta única que une salud, belleza y viaje en una sola experiencia. Planes personalizados de cirugía estética + turismo de bienestar.'
+                ],
+                [
+                    'icon' => 'experience',
+                    'title' => 'Privacidad Garantizada',
+                    'description' => 'Tu proceso será totalmente confidencial. Cuidamos cada detalle con máxima discreción. Confianza, privacidad y atención exclusiva de principio a fin.'
+                ]
+            ]
         ],
         'form' => [
-            'title' => 'Agenda tu consulta gratuita',
-            'name' => 'Nombre completo',
+            'title' => 'Queremos Conocerte',
+            'subtitle' => 'Completa el formulario y agenda una conversación con nuestros expertos en turismo médico. Te guiaremos paso a paso para crear la experiencia médica perfecta para ti, combinando atención de primer nivel, bienestar y hospitalidad.',
+            'schedule_title' => 'Selecciona tu fecha y hora preferida',
+            'appointment_date' => 'Fecha de la cita',
+            'appointment_time' => 'Hora de la cita',
+            'select_date' => 'Seleccionar fecha',
+            'select_time' => 'Seleccionar hora',
+            'first_select_date' => 'Primero selecciona una fecha',
+            'name' => 'Nombre',
+            'lastname' => 'Apellido', 
             'email' => 'Correo electrónico',
-            'phone' => 'Teléfono',
-            'country' => 'País de residencia',
-            'procedure' => 'Procedimiento de interés',
-            'date' => 'Fecha preferida',
-            'time' => 'Hora preferida',
-            'message' => 'Mensaje adicional',
-            'submit' => 'Agendar Consulta',
+            'phone' => 'Teléfono/Móvil',
+            'country' => 'País del pasaporte',
+            'select_country' => 'Seleccionar país',
+            'budget' => 'Presupuesto por persona (excluidos vuelos) en USD',
+            'budget_question' => '¿Qué presupuesto tienes? en USD',
+            'select_budget' => 'Seleccionar presupuesto',
+            'budget_options' => [
+                '4000-8000' => '$4,000 a $8,000',
+                '8000-12000' => '$8,000 a $12,000', 
+                '12000-16000' => '$12,000 a $16,000',
+                '16000-20000' => '$16,000 a $20,000',
+                '20000+' => '$20,000+'
+            ],
+            'travel_type' => 'Viajas:',
+            'travel_type_options' => [
+                'solo' => 'Solo',
+                'amigo' => 'Con un amigo',
+                'familiar' => 'Con un familiar', 
+                'grupo' => 'En grupo'
+            ],
+            'group_size' => '¿Cuántas personas hay en su grupo (incluido usted)?',
+            'group_size_placeholder' => 'Incluido usted',
+            'objectives' => 'Cuéntanos en qué procedimiento estás interesado',
+            'objectives_placeholder' => 'Escribe el procedimiento médico o estético que te interesa (ej. rinoplastia, liposucción, aumento de senos, etc.). Si lo deseas, puedes añadir cualquier información adicional que consideres importante, como antecedentes médicos, intervenciones previas o aspectos específicos que te gustaría mejorar.',
+            'found_us' => '¿Cómo nos ha encontrado?',
+            'select_found' => 'Seleccionar',
+            'found_options' => [
+                'google' => 'Google (u otro motor de búsqueda)',
+                'social' => 'Redes sociales',
+                'referral' => 'Remisión', 
+                'other' => 'Otros'
+            ],
+            'contact_preference' => '¿Cómo prefiere que nos pongamos en contacto con usted?',
+            'contact_options' => [
+                'email' => 'Correo electrónico',
+                'phone' => 'Teléfono',
+                'whatsapp' => 'WhatsApp'
+            ],
+            'terms' => 'He leído los términos y condiciones',
+            'privacy' => 'Acepto los paquetes de turismo médico Condiciones generales he leído el Política de privacidad y acepto que los datos que he proporcionado, incluidos los datos sanitarios, sean procesados por Medical Tourism Packages con el fin de obtener presupuestos.',
+            'submit' => 'ENVIAR',
+            'sending' => 'Enviando...',
             'required' => 'Campo requerido'
         ],
-        'contact_info' => [
-            'title' => 'Información de Contacto',
-            'address' => 'Quito, Ecuador',
-            'phone' => '+593 XXX XXXX',
-            'email' => 'info@kasaami.com',
-            'hours' => 'Lunes a Viernes: 8:00 AM - 6:00 PM',
-            'emergency' => 'Emergencias 24/7'
-        ],
-        'procedures' => [
-            'body' => 'Procedimientos Corporales',
-            'face' => 'Procedimientos Faciales',
-            'hair' => 'Trasplante Capilar',
-            'obesity' => 'Cirugía Bariátrica',
-            'other' => 'Otro'
+        'contact_direct' => [
+            'title' => '¿Necesitas más información?',
+            'subtitle' => 'Comunícate con nosotros por cualquiera de nuestros canales disponibles.',
+            'whatsapp_title' => 'WhatsApp',
+            'whatsapp_desc' => 'Escríbenos y uno de nuestros asesores te atenderá',
+            'whatsapp_number' => '+593 96 305 2401',
+            'whatsapp_cta' => 'Chatear por WhatsApp',
+            'email_title' => 'Correo Electrónico', 
+            'email_desc' => 'Envíanos un correo electrónico para poder resolver tus dudas',
+            'email_address' => 'info@kasaamigroup.com',
+            'email_cta' => 'Enviar Email',
+            'location_title' => 'Ubicación',
+            'location_desc' => 'Av. Mariano Paredes, entre Tadeo Benitez y Jonatan Saenz, Edificio Atika\nQuito, Ecuador',
+            'crm_cta' => 'Acceso CRM'
         ],
         'success' => [
-            'title' => '¡Consulta Agendada!',
-            'message' => 'Hemos recibido tu solicitud. Te contactaremos pronto para confirmar tu cita.',
+            'title' => '¡Consulta Enviada!',
+            'message' => 'Hemos recibido tu consulta. Te contactaremos pronto para programar tu cita.',
+            'appointment_scheduled' => '¡Consulta Agendada!',
             'next_steps' => 'Próximos pasos:',
             'step1' => 'Recibirás un email de confirmación',
-            'step2' => 'Nuestro equipo te contactará en 24 horas',
-            'step3' => 'Se creará un enlace para tu consulta virtual'
-        ],
-        'footer' => [
-            'description' => 'Tu transformación comienza en el corazón de los Andes. Experimenta la excelencia médica en Ecuador con nuestros especialistas de clase mundial.',
-            'links' => 'Enlaces Rápidos',
-            'contact' => 'Contacto',
-            'newsletter' => 'Newsletter',
-            'email_placeholder' => 'Tu email',
-            'rights' => 'Todos los derechos reservados',
-            'privacy' => 'Política de Privacidad',
-            'terms' => 'Términos y Condiciones'
-        ],
-        'whatsapp' => [
-            'message' => 'Hola! Me interesa agendar una consulta con Kasaami Care & Beauty.',
-            'tooltip' => 'Escríbenos por WhatsApp'
+            'step2' => 'Te contactaremos lo más pronto posible para brindarte los detalles de la asesoría virtual',
+            'step3' => 'Se creará un enlace para tu consulta virtual',
+            'close' => 'Cerrar',
+            'whatsapp_contact' => 'Contactar por WhatsApp'
         ]
     ],
     'en' => [
         'nav' => [
             'about' => 'About Us',
-            'services' => 'Services',
+            'services' => 'Services', 
             'procedures' => 'Procedures'
         ],
         'hero' => [
-            'title' => 'Contact',
-            'subtitle' => 'Schedule your free and personalized consultation'
+            'title' => 'Contact Us',
+            'subtitle' => 'We design experiences tailored to you. Schedule your free consultation and start your journey with Kasaami.'
         ],
-        'intro' => [
-            'title' => 'Start your transformation',
-            'description' => 'Our team of specialists is ready to accompany you in every step of your transformation process. Schedule a free consultation and discover all the options available for you.',
-            'video_text' => 'Learn more about our process and how we can help you achieve your transformation and wellness goals.'
+        'video' => [
+            'title' => 'Discover Our Process',
+            'subtitle' => 'This is how at Kasaami we transform your life in Ecuador.'
+        ],
+        'why_contact' => [
+            'title' => 'Why get in touch with us?',
+            'subtitle' => 'We design experiences tailored to you. Schedule your free consultation and start your journey with Kasaami.',
+            'benefits' => [
+                [
+                    'icon' => 'consultation',
+                    'title' => 'Free Consultation',
+                    'description' => 'Have a no-commitment conversation with an expert medical tourism advisor.<br>We are here to listen and guide you.<br>Initial consultation at no cost.'
+                ],
+                [
+                    'icon' => 'package',
+                    'title' => 'Complimentary First Consultation',
+                    'description' => 'Share your goals and concerns with a specialist who understands what you need. Medical and aesthetic consultation without commitment, 100% tailored to you.'
+                ],
+                [
+                    'icon' => 'privacy',
+                    'title' => 'Custom-Designed Package',
+                    'description' => 'Receive a unique proposal that combines health, beauty and travel in one experience. Personalized aesthetic surgery + wellness tourism plans.'
+                ],
+                [
+                    'icon' => 'experience',
+                    'title' => 'Guaranteed Privacy',
+                    'description' => 'Your process will be completely confidential. We take care of every detail with maximum discretion. Trust, privacy and exclusive attention from start to finish.'
+                ]
+            ]
         ],
         'form' => [
-            'title' => 'Schedule your free consultation',
-            'name' => 'Full name',
+            'title' => 'We Want to Know You',
+            'subtitle' => 'Complete the form and schedule a conversation with our medical tourism experts. We will guide you step by step to create the perfect medical experience for you, combining first-class care, wellness and hospitality.',
+            'schedule_title' => 'Select your preferred date and time',
+            'appointment_date' => 'Appointment date',
+            'appointment_time' => 'Appointment time',
+            'select_date' => 'Select date',
+            'select_time' => 'Select time',
+            'first_select_date' => 'First select a date',
+            'name' => 'First Name',
+            'lastname' => 'Last Name', 
             'email' => 'Email address',
-            'phone' => 'Phone number',
-            'country' => 'Country of residence',
-            'procedure' => 'Procedure of interest',
-            'date' => 'Preferred date',
-            'time' => 'Preferred time',
-            'message' => 'Additional message',
-            'submit' => 'Schedule Consultation',
+            'phone' => 'Phone/Mobile',
+            'country' => 'Passport country',
+            'select_country' => 'Select country',
+            'budget' => 'Budget per person (excluding flights) in USD',
+            'budget_question' => 'What is your budget? in USD',
+            'select_budget' => 'Select budget',
+            'budget_options' => [
+                '4000-8000' => '$4,000 to $8,000',
+                '8000-12000' => '$8,000 to $12,000', 
+                '12000-16000' => '$12,000 to $16,000',
+                '16000-20000' => '$16,000 to $20,000',
+                '20000+' => '$20,000+'
+            ],
+            'travel_type' => 'You travel:',
+            'travel_type_options' => [
+                'solo' => 'Alone',
+                'amigo' => 'With a friend',
+                'familiar' => 'With family', 
+                'grupo' => 'In group'
+            ],
+            'group_size' => 'How many people are in your group (including yourself)?',
+            'group_size_placeholder' => 'Including yourself',
+            'objectives' => 'Tell us which procedure you are interested in',
+            'objectives_placeholder' => 'Write the medical or aesthetic procedure you are interested in (e.g. rhinoplasty, liposuction, breast augmentation, etc.). If you wish, you can add any additional information you consider important, such as medical history, previous interventions or specific aspects you would like to improve.',
+            'found_us' => 'How did you find us?',
+            'select_found' => 'Select',
+            'found_options' => [
+                'google' => 'Google (or other search engine)',
+                'social' => 'Social media',
+                'referral' => 'Referral', 
+                'other' => 'Others'
+            ],
+            'contact_preference' => 'How do you prefer us to contact you?',
+            'contact_options' => [
+                'email' => 'Email',
+                'phone' => 'Phone',
+                'whatsapp' => 'WhatsApp'
+            ],
+            'terms' => 'I have read the terms and conditions',
+            'privacy' => 'I accept the medical tourism packages General Conditions I have read the Privacy Policy and agree that the data I have provided, including health data, be processed by Medical Tourism Packages for the purpose of obtaining quotes.',
+            'submit' => 'SUBMIT',
+            'sending' => 'Sending...',
             'required' => 'Required field'
         ],
-        'contact_info' => [
-            'title' => 'Contact Information',
-            'address' => 'Quito, Ecuador',
-            'phone' => '+593 XXX XXXX',
-            'email' => 'info@kasaami.com',
-            'hours' => 'Monday to Friday: 8:00 AM - 6:00 PM',
-            'emergency' => '24/7 Emergency'
-        ],
-        'procedures' => [
-            'body' => 'Body Procedures',
-            'face' => 'Facial Procedures', 
-            'hair' => 'Hair Transplant',
-            'obesity' => 'Bariatric Surgery',
-            'other' => 'Other'
+        'contact_direct' => [
+            'title' => 'Need more information?',
+            'subtitle' => 'Contact us through any of our available channels.',
+            'whatsapp_title' => 'WhatsApp',
+            'whatsapp_desc' => 'Write to us and one of our advisors will assist you',
+            'whatsapp_number' => '+593 96 305 2401',
+            'whatsapp_cta' => 'Chat on WhatsApp',
+            'email_title' => 'Email', 
+            'email_desc' => 'Send us an email so we can resolve your questions',
+            'email_address' => 'info@kasaamigroup.com',
+            'email_cta' => 'Send Email',
+            'location_title' => 'Location',
+            'location_desc' => 'Av. Mariano Paredes, between Tadeo Benitez and Jonatan Saenz, Atika Building\nQuito, Ecuador',
+            'crm_cta' => 'CRM Access'
         ],
         'success' => [
-            'title' => 'Consultation Scheduled!',
-            'message' => 'We have received your request. We will contact you soon to confirm your appointment.',
+            'title' => 'Consultation Sent!',
+            'message' => 'We have received your consultation. We will contact you soon to schedule your appointment.',
+            'appointment_scheduled' => 'Appointment Scheduled!',
             'next_steps' => 'Next steps:',
             'step1' => 'You will receive a confirmation email',
             'step2' => 'Our team will contact you within 24 hours',
-            'step3' => 'A link will be created for your virtual consultation'
-        ],
-        'footer' => [
-            'description' => 'Your transformation begins in the heart of the Andes. Experience medical excellence in Ecuador with our world-class specialists.',
-            'links' => 'Quick Links',
-            'contact' => 'Contact',
-            'newsletter' => 'Newsletter',
-            'email_placeholder' => 'Your email',
-            'rights' => 'All rights reserved',
-            'privacy' => 'Privacy Policy',
-            'terms' => 'Terms and Conditions'
-        ],
-        'whatsapp' => [
-            'message' => 'Hello! I am interested in scheduling a consultation with Kasaami Care & Beauty.',
-            'tooltip' => 'Contact us on WhatsApp'
+            'step3' => 'A link will be created for your virtual consultation',
+            'close' => 'Close',
+            'whatsapp_contact' => 'Contact via WhatsApp'
         ]
     ]
 ];
@@ -150,17 +279,21 @@ $t = $content[$currentLang];
     <title><?php echo $pageTitle; ?></title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="<?php echo $t['intro']['description']; ?>">
+    <meta name="description" content="Agenda tu consulta gratuita con Kasaami Care & Beauty. Especialistas en turismo médico en Ecuador.">
     <meta name="keywords" content="contacto, consulta médica, Ecuador, turismo médico, agendar cita">
     <meta name="author" content="Kasaami Care & Beauty">
+
+    <!-- Favicon -->
+   <!-- Favicon -->
+    <link rel="icon" type="image/png" href="public/favicon.png">
+    <link rel="shortcut icon" href="public/favicon.png">
+    <link rel="apple-touch-icon" href="public/favicon.png">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Rufina:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Filson Pro Fonts -->
+    <link rel="stylesheet" href="assets/css/fonts.css">
     
     <!-- Custom Tailwind Config -->
     <script>
@@ -168,8 +301,8 @@ $t = $content[$currentLang];
             theme: {
                 extend: {
                     fontFamily: {
-                        'poppins': ['Poppins', 'sans-serif'],
-                        'rufina': ['Rufina', 'serif']
+                        'filson': ['Filson Pro', 'sans-serif'],
+                        'sans': ['Filson Pro', 'system-ui', 'sans-serif']
                     },
                     colors: {
                         'kasaami': {
@@ -222,10 +355,189 @@ $t = $content[$currentLang];
             transform: translateY(-8px);
             box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.25);
         }
+
+        .phone-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .phone-flag {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .phone-flag.visible {
+            opacity: 1;
+        }
+
+        .phone-flag img {
+            width: 20px;
+            height: 14px;
+            border-radius: 2px;
+            object-fit: cover;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        #phone-input {
+            transition: padding-left 0.3s ease;
+            padding-left: 16px;
+        }
+
+        #phone-input.with-flag {
+            padding-left: 42px;
+        }
+
+        .country-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        /* DEBUG: Indicador sutil de conexión BD (comentar en producción) */
+        .debug-indicator {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            z-index: 9999;
+            opacity: 0.7;
+        }
+        .debug-connected { background-color: #10B981; }
+        .debug-disconnected { background-color: #EF4444; }
+        
+        /* Calendar Styles */
+        .calendar-day {
+            @apply w-8 h-8 flex items-center justify-center text-sm rounded-lg cursor-pointer transition-all duration-200 relative;
+        }
+        
+        .calendar-day.disabled {
+            @apply text-gray-300 cursor-not-allowed opacity-50;
+        }
+        
+        .calendar-day.disabled::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px;
+            height: 4px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+        
+        .calendar-day.available {
+            @apply text-gray-700 hover:bg-kasaami-light-violet hover:text-white;
+        }
+        
+        .calendar-day.available::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px;
+            height: 4px;
+            background-color: #10b981;
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+        
+        .calendar-day.selected {
+            @apply bg-kasaami-violet text-white font-semibold;
+        }
+        
+        .calendar-day.selected::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 6px;
+            background-color: #ffffff;
+            border-radius: 50%;
+        }
+        
+        .calendar-day.other-month {
+            @apply text-gray-300 opacity-40;
+        }
+        
+        .calendar-day.today {
+            @apply ring-2 ring-kasaami-violet font-semibold;
+        }
+        
+        .calendar-day.past {
+            @apply text-gray-400 cursor-not-allowed line-through opacity-60;
+        }
+        
+        .calendar-day.past::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 3px;
+            height: 3px;
+            background-color: #6b7280;
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+        
+        /* Time Chip Styles */
+        .time-chip {
+            @apply transform transition-all duration-200 ease-in-out;
+        }
+        
+        .time-chip.selected {
+            @apply border-kasaami-violet bg-kasaami-violet text-white font-semibold scale-105 shadow-lg;
+        }
+        
+        .time-chip.available:hover {
+            @apply border-kasaami-violet bg-kasaami-light-violet text-white scale-105 shadow-md;
+        }
+        
+        .time-chip.unavailable {
+            @apply border-red-200 bg-red-50 text-red-400 cursor-not-allowed opacity-60;
+        }
+        
+        /* Smooth transitions for calendar and modal */
+        .modal-enter {
+            @apply opacity-0 scale-95;
+        }
+        
+        .modal-enter-active {
+            @apply opacity-100 scale-100 transition-all duration-200 ease-out;
+        }
+        
+        /* Loading states */
+        .loading-pulse {
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
     </style>
 </head>
 
 <body class="font-poppins bg-white overflow-x-hidden">
+    
+    <!-- DEBUG: Indicador de conexión BD (comentar en producción) -->
+    <div class="debug-indicator <?php echo $debug_db_status ? 'debug-connected' : 'debug-disconnected'; ?>" 
+         title="<?php echo $debug_db_message; ?>"></div>
     
     <!-- Navigation -->
     <?php include 'includes/Navbar.php'; ?>
@@ -243,294 +555,86 @@ $t = $content[$currentLang];
         </div>
     </section>
 
-    <!-- Introduction with Video Section -->
+    <!-- Video Section -->
     <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <!-- Content -->
-                <div class="space-y-8">
-                    <h2 class="text-4xl md:text-5xl font-rufina font-bold text-gray-900">
-                        <?php echo $t['intro']['title']; ?>
-                    </h2>
-                    <p class="text-lg text-gray-600 leading-relaxed">
-                        <?php echo $t['intro']['description']; ?>
-                    </p>
-                    <div class="bg-kasaami-pearl p-6 rounded-xl border-l-4 border-kasaami-violet">
-                        <p class="text-gray-700 font-medium">
-                            <?php echo $t['intro']['video_text']; ?>
-                        </p>
-                    </div>
-                </div>
-                
-                <!-- Video Placeholder -->
-                <div class="relative hover-lift">
-                    <div class="aspect-video bg-gradient-to-br from-kasaami-violet to-kasaami-dark-violet rounded-2xl shadow-2xl flex items-center justify-center">
-                        <div class="text-center text-white">
-                            <svg class="w-20 h-20 mx-auto mb-4 animate-pulse-gentle" fill="currentColor" viewBox="0 0 24 24">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl md:text-5xl font-rufina font-bold text-gray-900 mb-8">
+                <?php echo $t['video']['title']; ?>
+            </h2>
+            <p class="text-xl text-gray-600 mb-12">
+                <?php echo $t['video']['subtitle']; ?>
+            </p>
+            
+            <!-- Video Placeholder -->
+            <div class="relative hover-lift">
+                <div class="aspect-video bg-gradient-to-br from-kasaami-violet to-kasaami-dark-violet rounded-2xl shadow-2xl flex items-center justify-center cursor-pointer" onclick="playVideo()">
+                    <div class="text-center text-white">
+                        <div class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 hover:bg-white/30 transition-colors duration-300">
+                            <svg class="w-12 h-12 animate-pulse-gentle ml-2" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
-                            <p class="text-lg font-medium">Video de Presentación</p>
-                            <p class="text-sm opacity-80">Conoce nuestro proceso</p>
                         </div>
+                        <p class="text-xl font-medium mb-2">Video de Presentación</p>
+                        <p class="text-sm opacity-80">Conoce nuestro proceso de transformación</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Form & Info Section -->
+    <!-- Why Contact Us Section -->
     <section class="py-20 bg-kasaami-pearl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                
-                <!-- Contact Form -->
-                <div class="lg:col-span-2">
-                    <div class="bg-white rounded-2xl shadow-xl p-8 hover-lift">
-                        <h2 class="text-3xl font-rufina font-bold text-gray-900 mb-8">
-                            <?php echo $t['form']['title']; ?>
-                        </h2>
-                        
-                        <form id="contact-form" class="space-y-6">
-                            <!-- Name & Email -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <?php echo $t['form']['name']; ?> <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" required class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kasaami-violet focus:border-kasaami-violet">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <?php echo $t['form']['email']; ?> <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="email" required class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kasaami-violet focus:border-kasaami-violet">
-                                </div>
-                            </div>
-
-                            <!-- Phone & Country -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <?php echo $t['form']['phone']; ?> <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="tel" required class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kasaami-violet focus:border-kasaami-violet">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <?php echo $t['form']['country']; ?> <span class="text-red-500">*</span>
-                                    </label>
-                                    <select required class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kasaami-violet focus:border-kasaami-violet">
-                                        <option value="">Seleccionar país</option>
-                                        <option value="US">Estados Unidos</option>
-                                        <option value="CA">Canadá</option>
-                                        <option value="ES">España</option>
-                                        <option value="MX">México</option>
-                                        <option value="CO">Colombia</option>
-                                        <option value="PE">Perú</option>
-                                        <option value="AR">Argentina</option>
-                                        <option value="other">Otro</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Procedure -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <?php echo $t['form']['procedure']; ?> <span class="text-red-500">*</span>
-                                </label>
-                                <select required class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kasaami-violet focus:border-kasaami-violet">
-                                    <option value="">Seleccionar procedimiento</option>
-                                    <option value="body"><?php echo $t['procedures']['body']; ?></option>
-                                    <option value="face"><?php echo $t['procedures']['face']; ?></option>
-                                    <option value="hair"><?php echo $t['procedures']['hair']; ?></option>
-                                    <option value="obesity"><?php echo $t['procedures']['obesity']; ?></option>
-                                    <option value="other"><?php echo $t['procedures']['other']; ?></option>
-                                </select>
-                            </div>
-
-                            <!-- Date & Time -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <?php echo $t['form']['date']; ?>
-                                    </label>
-                                    <input type="date" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kasaami-violet focus:border-kasaami-violet">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <?php echo $t['form']['time']; ?>
-                                    </label>
-                                    <select class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kasaami-violet focus:border-kasaami-violet">
-                                        <option value="">Seleccionar hora</option>
-                                        <option value="09:00">9:00 AM</option>
-                                        <option value="10:00">10:00 AM</option>
-                                        <option value="11:00">11:00 AM</option>
-                                        <option value="14:00">2:00 PM</option>
-                                        <option value="15:00">3:00 PM</option>
-                                        <option value="16:00">4:00 PM</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Message -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <?php echo $t['form']['message']; ?>
-                                </label>
-                                <textarea rows="4" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-kasaami-violet focus:border-kasaami-violet" placeholder="Cuéntanos más sobre tus objetivos y expectativas..."></textarea>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <button type="submit" class="w-full bg-gradient-to-r from-kasaami-violet to-kasaami-dark-violet text-white py-4 px-8 rounded-lg font-semibold text-lg hover:shadow-lg hover:shadow-kasaami-violet/25 transition-all duration-200 transform hover:scale-105">
-                                <?php echo $t['form']['submit']; ?>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Contact Information -->
-                <div class="space-y-8">
-                    <!-- Contact Info Card -->
-                    <div class="bg-white rounded-2xl shadow-xl p-8 hover-lift">
-                        <h3 class="text-2xl font-rufina font-bold text-gray-900 mb-6">
-                            <?php echo $t['contact_info']['title']; ?>
-                        </h3>
-                        
-                        <div class="space-y-4">
-                            <!-- Address -->
-                            <div class="flex items-start space-x-4">
-                                <div class="w-6 h-6 text-kasaami-violet mt-1">
-                                    <svg fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-gray-900">Dirección</p>
-                                    <p class="text-gray-600"><?php echo $t['contact_info']['address']; ?></p>
-                                </div>
-                            </div>
-
-                            <!-- Phone -->
-                            <div class="flex items-start space-x-4">
-                                <div class="w-6 h-6 text-kasaami-violet mt-1">
-                                    <svg fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-gray-900">Teléfono</p>
-                                    <p class="text-gray-600"><?php echo $t['contact_info']['phone']; ?></p>
-                                </div>
-                            </div>
-
-                            <!-- Email -->
-                            <div class="flex items-start space-x-4">
-                                <div class="w-6 h-6 text-kasaami-violet mt-1">
-                                    <svg fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
-                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-gray-900">Email</p>
-                                    <p class="text-gray-600"><?php echo $t['contact_info']['email']; ?></p>
-                                </div>
-                            </div>
-
-                            <!-- Hours -->
-                            <div class="flex items-start space-x-4">
-                                <div class="w-6 h-6 text-kasaami-violet mt-1">
-                                    <svg fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-gray-900">Horarios</p>
-                                    <p class="text-gray-600"><?php echo $t['contact_info']['hours']; ?></p>
-                                    <p class="text-sm text-kasaami-violet font-medium"><?php echo $t['contact_info']['emergency']; ?></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Quick Contact Buttons -->
-                    <div class="space-y-4">
-                        <a href="https://wa.me/593XXXXXXXXX" class="flex items-center justify-center space-x-3 bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-lg transition-colors duration-200 transform hover:scale-105">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-rufina font-bold text-gray-900 mb-6">
+                    <?php echo $t['why_contact']['title']; ?>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    <?php echo $t['why_contact']['subtitle']; ?>
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <?php foreach ($t['why_contact']['benefits'] as $benefit): ?>
+                <div class="text-center p-8 bg-white rounded-2xl shadow-lg hover-lift">
+                    <!-- Icon -->
+                    <div class="w-20 h-20 bg-gradient-to-br from-kasaami-light-violet to-kasaami-violet rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <?php if ($benefit['icon'] === 'consultation'): ?>
+                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                             </svg>
-                            <span class="font-medium">Chatear por WhatsApp</span>
-                        </a>
-                        
-                        <a href="mailto:info@kasaami.com" class="flex items-center justify-center space-x-3 bg-kasaami-violet hover:bg-kasaami-dark-violet text-white py-4 px-6 rounded-lg transition-colors duration-200 transform hover:scale-105">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
-                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                        <?php elseif ($benefit['icon'] === 'package'): ?>
+                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                             </svg>
-                            <span class="font-medium">Enviar Email</span>
-                        </a>
+                        <?php elseif ($benefit['icon'] === 'privacy'): ?>
+                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M7 4V2C7 1.45 7.45 1 8 1h8c.55 0 1 .45 1 1v2h4c.55 0 1 .45 1 1v16c0 .55-.45 1-1 1H3c-.55 0-1-.45-1-1V5c0-.55.45-1 1-1h4zM9 3v1h6V3H9zm10 5H5v11h14V8z"/>
+                            </svg>
+                        <?php else: ?>
+                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                            </svg>
+                        <?php endif; ?>
                     </div>
+                    
+                    <!-- Content -->
+                    <h3 class="text-xl font-rufina font-bold text-gray-900 mb-4">
+                        <?php echo $benefit['title']; ?>
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">
+                        <?php echo nl2br($benefit['description']); ?>
+                    </p>
                 </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
 
-    <!-- Success Message (Hidden by default) -->
-    <div id="success-message" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 text-center animate-slide-up">
-            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                </svg>
-            </div>
-            <h3 class="text-2xl font-rufina font-bold text-gray-900 mb-4">
-                <?php echo $t['success']['title']; ?>
-            </h3>
-            <p class="text-gray-600 mb-6">
-                <?php echo $t['success']['message']; ?>
-            </p>
-            <div class="text-left mb-6">
-                <h4 class="font-semibold text-gray-900 mb-3"><?php echo $t['success']['next_steps']; ?></h4>
-                <ul class="space-y-2 text-sm text-gray-600">
-                    <li class="flex items-start space-x-2">
-                        <span class="text-kasaami-violet">1.</span>
-                        <span><?php echo $t['success']['step1']; ?></span>
-                    </li>
-                    <li class="flex items-start space-x-2">
-                        <span class="text-kasaami-violet">2.</span>
-                        <span><?php echo $t['success']['step2']; ?></span>
-                    </li>
-                    <li class="flex items-start space-x-2">
-                        <span class="text-kasaami-violet">3.</span>
-                        <span><?php echo $t['success']['step3']; ?></span>
-                    </li>
-                </ul>
-            </div>
-            <button onclick="closeSuccessMessage()" class="bg-kasaami-violet hover:bg-kasaami-dark-violet text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
-                Cerrar
-            </button>
-        </div>
-    </div>
+    <!-- Formulario de Contacto -->
+    <?php include 'componentes/formulario.php'; ?>
 
-    <!-- Call to Action Section -->
-    <section class="py-20 bg-gradient-to-r from-kasaami-violet to-kasaami-dark-violet text-white">
-        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl md:text-5xl font-rufina font-bold mb-6">
-                <?php echo $currentLang === 'es' ? 'Tu transformación te está esperando' : 'Your transformation is waiting for you'; ?>
-            </h2>
-            <p class="text-xl mb-8 opacity-90">
-                <?php echo $currentLang === 'es' ? 'Da el primer paso hacia la versión mejorada de ti mismo' : 'Take the first step towards an improved version of yourself'; ?>
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="sobre-nosotros.php" class="bg-white text-kasaami-violet px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105">
-                    <?php echo $currentLang === 'es' ? 'Conocer Más' : 'Learn More'; ?>
-                </a>
-                <a href="procedimientos.php" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-kasaami-violet transition-all duration-200 transform hover:scale-105">
-                    <?php echo $currentLang === 'es' ? 'Ver Procedimientos' : 'View Procedures'; ?>
-                </a>
-            </div>
-        </div>
-    </section>
+
 
     <!-- Footer -->
     <?php include 'includes/Footer.php'; ?>
@@ -539,33 +643,799 @@ $t = $content[$currentLang];
     <?php include 'includes/FlotanteWpp.php'; ?>
 
     <script>
-        // Form submission handler
+        // Country codes mapping for flag detection
+        const countryCodes = {
+            '1': 'us',     // USA/Canada
+            '7': 'ru',     // Russia
+            '33': 'fr',    // France
+            '34': 'es',    // Spain
+            '39': 'it',    // Italy
+            '44': 'gb',    // United Kingdom
+            '49': 'de',    // Germany
+            '51': 'pe',    // Peru
+            '52': 'mx',    // Mexico
+            '54': 'ar',    // Argentina
+            '55': 'br',    // Brazil
+            '56': 'cl',    // Chile
+            '57': 'co',    // Colombia
+            '58': 've',    // Venezuela
+            '86': 'cn',    // China
+            '91': 'in',    // India
+            '351': 'pt',   // Portugal
+            '506': 'cr',   // Costa Rica
+            '507': 'pa',   // Panama
+            '591': 'bo',   // Bolivia
+            '593': 'ec',   // Ecuador
+            '595': 'py',   // Paraguay
+            '598': 'uy'    // Uruguay
+        };
+
+        // Calendar variables
+        let currentCalendarDate = new Date();
+        let selectedDate = null;
+        let selectedTime = null;
+        let calendarVisible = false;
+        
+        // Available dates from PHP
+        const availableDates = <?php echo json_encode($available_schedules['dates']); ?>;
+        const availableTimes = <?php echo json_encode($available_schedules['times']); ?>;
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkDatabaseConnection();
+            initializeTimeChips();
+            
+            // Calendar navigation
+            document.getElementById('prev-month').addEventListener('click', function() {
+                currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+                renderCalendar();
+            });
+            
+            document.getElementById('next-month').addEventListener('click', function() {
+                currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+                renderCalendar();
+            });
+            
+            // Click outside calendar to close
+            document.addEventListener('click', function(e) {
+                const calendarDropdown = document.getElementById('calendar-dropdown');
+                const dateDisplay = document.getElementById('date-display');
+                
+                if (!calendarDropdown.contains(e.target) && e.target !== dateDisplay) {
+                    hideCalendar();
+                }
+            });
+
+            // Phone input flag detection
+            const phoneInput = document.getElementById('phone-input');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function() {
+                    const value = this.value;
+                    const countryCode = detectCountryFromPhone(value);
+                    updatePhoneFlag(countryCode);
+                });
+                
+                phoneInput.addEventListener('blur', function() {
+                    if (this.value.trim() === '') {
+                        updatePhoneFlag(null);
+                    }
+                });
+            }
+
+            // Handle modal keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const modal = document.getElementById('appointment-modal');
+                    if (modal && !modal.classList.contains('hidden')) {
+                        closeAppointmentModal();
+                    }
+                }
+            });
+
+            // Handle modal outside click
+            document.getElementById('appointment-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAppointmentModal();
+                }
+            });
+        });
+
+        // Verificar conexión a la base de datos
+        async function checkDatabaseConnection() {
+            try {
+                const response = await fetch('includes/check_connection.php');
+                const data = await response.json();
+                
+                const statusDiv = document.getElementById('connection-status');
+                const statusIcon = document.getElementById('status-icon');
+                const statusMessage = document.getElementById('status-message');
+                
+                if (data.success) {
+                    statusDiv.className = 'mb-6 p-4 rounded-lg bg-green-50 border border-green-200';
+                    statusIcon.innerHTML = `
+                        <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    `;
+                    statusMessage.innerHTML = `
+                        <span class="text-green-700 font-medium">Sistema CRM conectado</span>
+                        <div class="text-green-600 text-sm mt-1">Base de datos: ${data.tables.join(', ')}</div>
+                    `;
+                } else {
+                    statusDiv.className = 'mb-6 p-4 rounded-lg bg-red-50 border border-red-200';
+                    statusIcon.innerHTML = `
+                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    `;
+                    statusMessage.innerHTML = `
+                        <span class="text-red-700 font-medium">Error de conexión CRM</span>
+                        <div class="text-red-600 text-sm mt-1">Por favor contáctanos por WhatsApp</div>
+                    `;
+                }
+                
+                statusDiv.classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Error checking connection:', error);
+            }
+        }
+
+        // Toggle calendar visibility
+        function toggleCalendar() {
+            const calendarDropdown = document.getElementById('calendar-dropdown');
+            
+            if (calendarVisible) {
+                hideCalendar();
+            } else {
+                showCalendar();
+            }
+        }
+        
+        // Show calendar
+        function showCalendar() {
+            const calendarDropdown = document.getElementById('calendar-dropdown');
+            calendarDropdown.classList.remove('hidden');
+            calendarVisible = true;
+            renderCalendar();
+        }
+        
+        // Hide calendar
+        function hideCalendar() {
+            const calendarDropdown = document.getElementById('calendar-dropdown');
+            calendarDropdown.classList.add('hidden');
+            calendarVisible = false;
+        }
+        
+        // Render calendar
+        function renderCalendar() {
+            const monthNames = {
+                'es': ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                'en': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+            };
+            
+            const currentLang = '<?php echo $currentLang; ?>';
+            const monthYear = document.getElementById('calendar-month-year');
+            const calendarDays = document.getElementById('calendar-days');
+            
+            // Update month/year display
+            monthYear.textContent = `${monthNames[currentLang][currentCalendarDate.getMonth()]} ${currentCalendarDate.getFullYear()}`;
+            
+            // Clear previous days
+            calendarDays.innerHTML = '';
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth(), 1);
+            const lastDay = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+            
+            // Generate 42 days (6 weeks)
+            for (let i = 0; i < 42; i++) {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + i);
+                
+                const dayButton = document.createElement('button');
+                dayButton.type = 'button';
+                dayButton.textContent = date.getDate();
+                dayButton.className = 'calendar-day';
+                
+                const dateString = date.toISOString().split('T')[0];
+                const isCurrentMonth = date.getMonth() === currentCalendarDate.getMonth();
+                const isToday = dateString === new Date().toISOString().split('T')[0];
+                const isPast = date < new Date().setHours(0, 0, 0, 0);
+                const isAvailable = availableDates.includes(dateString);
+                const isSelected = selectedDate === dateString;
+                
+                // Add appropriate classes
+                if (!isCurrentMonth) {
+                    dayButton.classList.add('other-month');
+                    dayButton.disabled = true;
+                } else if (isPast) {
+                    dayButton.classList.add('past');
+                    dayButton.disabled = true;
+                } else if (!isAvailable) {
+                    dayButton.classList.add('disabled');
+                    dayButton.disabled = true;
+                } else {
+                    dayButton.classList.add('available');
+                    dayButton.addEventListener('click', () => selectDate(dateString));
+                }
+                
+                if (isToday && isCurrentMonth && !isPast) {
+                    dayButton.classList.add('today');
+                }
+                
+                if (isSelected) {
+                    dayButton.classList.add('selected');
+                    // Remove other classes when selected
+                    dayButton.classList.remove('available', 'today');
+                }
+                
+                calendarDays.appendChild(dayButton);
+            }
+        }
+        
+        // Select date function
+        function selectDate(dateString) {
+            selectedDate = dateString;
+            selectedTime = null; // Reset time selection
+            
+            // Update hidden input
+            document.getElementById('modal-appointment-date').value = dateString;
+            
+            // Update display input
+            const dateObj = new Date(dateString);
+            const formattedDate = dateObj.toLocaleDateString('<?php echo $currentLang === "es" ? "es-ES" : "en-US"; ?>', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('date-display').value = formattedDate;
+            
+            // Hide calendar
+            hideCalendar();
+            
+            // Re-render calendar to show selection
+            renderCalendar();
+            
+            // Enable time selection
+            enableTimeSelection();
+            
+            // Check availability for selected date
+            checkModalAvailabilityForDate(dateString);
+            document.getElementById('modal-availability-info').classList.remove('hidden');
+        }
+        
+        // Initialize time chips
+        function initializeTimeChips() {
+            const timeChips = document.querySelectorAll('.time-chip');
+            timeChips.forEach(chip => {
+                chip.addEventListener('click', function() {
+                    if (!this.disabled && selectedDate) {
+                        selectTime(this.dataset.time);
+                    }
+                });
+            });
+        }
+        
+        // Enable time selection
+        function enableTimeSelection() {
+            const container = document.getElementById('time-selection-container');
+            const chips = document.querySelectorAll('.time-chip');
+            
+            container.classList.remove('opacity-50', 'pointer-events-none');
+            container.querySelector('p').textContent = '<?php echo $currentLang === "es" ? "Selecciona un horario:" : "Select a time:"; ?>';
+            
+            chips.forEach(chip => {
+                chip.disabled = false;
+                chip.classList.remove('selected', 'unavailable');
+                chip.classList.add('available');
+            });
+        }
+        
+        // Select time function
+        function selectTime(time) {
+            selectedTime = time;
+            
+            // Update hidden input
+            document.getElementById('modal-appointment-time').value = time;
+            
+            // Update chip styles
+            document.querySelectorAll('.time-chip').forEach(chip => {
+                chip.classList.remove('selected');
+                if (chip.dataset.time === time) {
+                    chip.classList.add('selected');
+                }
+            });
+            
+            // Update appointment summary
+            updateAppointmentSummary();
+            
+            // Check specific time availability
+            if (selectedDate && selectedTime) {
+                checkModalSpecificTimeAvailability(selectedDate, selectedTime);
+                document.getElementById('confirm-appointment-btn').disabled = false;
+            }
+        }
+        
+        // Update appointment summary
+        function updateAppointmentSummary() {
+            const appointmentSummary = document.getElementById('appointment-summary');
+            const appointmentDetails = document.getElementById('appointment-details');
+            
+            if (selectedDate && selectedTime) {
+                const dateObj = new Date(selectedDate);
+                const isSpanish = '<?php echo $currentLang; ?>' === 'es';
+                
+                const dayNames = {
+                    'es': ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                    'en': ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                };
+                
+                const dayName = dayNames[isSpanish ? 'es' : 'en'][dateObj.getDay()];
+                const formattedDate = dateObj.toLocaleDateString(isSpanish ? 'es-ES' : 'en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                const timeDisplay = availableTimes[selectedTime];
+                
+                appointmentDetails.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl">📅</span>
+                        <div>
+                            <div class="font-medium">${dayName}</div>
+                            <div class="text-xs text-gray-600">${formattedDate}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl">🕐</span>
+                        <div>
+                            <div class="font-medium">${timeDisplay}</div>
+                            <div class="text-xs text-gray-600">${isSpanish ? 'Hora local Ecuador' : 'Ecuador local time'}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2 mt-2 p-2 bg-white/50 rounded-lg">
+                        <span class="text-lg">✨</span>
+                        <div class="text-xs">
+                            <div class="font-medium text-kasaami-dark-violet">${isSpanish ? 'Consulta Virtual Gratuita' : 'Free Virtual Consultation'}</div>
+                            <div class="text-gray-600">${isSpanish ? 'Duración: 30 minutos' : 'Duration: 30 minutes'}</div>
+                        </div>
+                    </div>
+                `;
+                
+                appointmentSummary.classList.remove('hidden');
+            } else {
+                appointmentSummary.classList.add('hidden');
+            }
+        }
+        
+        // Show appointment modal
+        function showAppointmentModal() {
+            const modal = document.getElementById('appointment-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close appointment modal
+        function closeAppointmentModal() {
+            const modal = document.getElementById('appointment-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+            
+            // Reset selections
+            selectedDate = null;
+            selectedTime = null;
+            
+            // Reset modal form
+            document.getElementById('modal-appointment-date').value = '';
+            document.getElementById('modal-appointment-time').value = '';
+            document.getElementById('date-display').value = '';
+            
+            // Hide calendar
+            hideCalendar();
+            
+            // Reset time selection UI
+            const container = document.getElementById('time-selection-container');
+            container.classList.add('opacity-50', 'pointer-events-none');
+            container.querySelector('p').textContent = '<?php echo $t['form']['first_select_date']; ?>';
+            
+            // Reset time chips
+            document.querySelectorAll('.time-chip').forEach(chip => {
+                chip.disabled = true;
+                chip.classList.remove('selected', 'available', 'unavailable');
+            });
+            
+            // Hide availability info and disable confirm button
+            document.getElementById('modal-availability-info').classList.add('hidden');
+            document.getElementById('confirm-appointment-btn').disabled = true;
+            
+            // Reset calendar to current month
+            currentCalendarDate = new Date();
+        }
+
+        // Fill user summary in modal
+        function fillUserSummary() {
+            const summaryContent = document.getElementById('summary-content');
+            const formData = window.formData;
+            
+            const isSpanish = '<?php echo $currentLang; ?>' === 'es';
+            
+            const name = formData.get('name') + ' ' + formData.get('lastname');
+            const email = formData.get('email');
+            const phone = formData.get('phone');
+            const procedure = formData.get('procedures_interest');
+            const budget = formData.get('budget');
+            const travelType = formData.get('travel_type');
+            
+            // Get budget display text
+            const budgetOptions = <?php echo json_encode($t['form']['budget_options']); ?>;
+            const budgetDisplay = budgetOptions[budget] || budget;
+            
+            // Get travel type display text
+            const travelOptions = <?php echo json_encode($t['form']['travel_type_options']); ?>;
+            const travelDisplay = travelOptions[travelType] || travelType;
+            
+            let summaryHTML = `
+                <div><strong>${isSpanish ? 'Nombre:' : 'Name:'}</strong> ${name}</div>
+                <div><strong>${isSpanish ? 'Email:' : 'Email:'}</strong> ${email}</div>
+                <div><strong>${isSpanish ? 'Teléfono:' : 'Phone:'}</strong> ${phone}</div>
+                <div><strong>${isSpanish ? 'Procedimiento:' : 'Procedure:'}</strong> ${procedure.length > 100 ? procedure.substring(0, 100) + '...' : procedure}</div>
+                <div><strong>${isSpanish ? 'Presupuesto:' : 'Budget:'}</strong> ${budgetDisplay}</div>
+                <div><strong>${isSpanish ? 'Viaja:' : 'Travels:'}</strong> ${travelDisplay}</div>
+            `;
+            
+            summaryContent.innerHTML = summaryHTML;
+        }
+
+        // Confirm appointment and submit form
+        async function confirmAppointment() {
+            const appointmentDate = document.getElementById('modal-appointment-date').value;
+            const appointmentTime = document.getElementById('modal-appointment-time').value;
+            
+            if (!appointmentDate || !appointmentTime) {
+                showErrorMessage('<?php echo $currentLang === 'es' ? 'Por favor selecciona fecha y hora para la cita' : 'Please select date and time for the appointment'; ?>');
+                return;
+            }
+            
+            const confirmBtn = document.getElementById('confirm-appointment-btn');
+            const confirmText = document.getElementById('confirm-appointment-text');
+            const confirmLoading = document.getElementById('confirm-appointment-loading');
+            
+            // Show loading state
+            confirmBtn.disabled = true;
+            confirmText.classList.add('hidden');
+            confirmLoading.classList.remove('hidden');
+            
+            try {
+                // Add appointment data to form
+                window.formData.append('appointment_date', appointmentDate);
+                window.formData.append('appointment_time', appointmentTime);
+                
+                const response = await fetch('includes/formulario.php', {
+                    method: 'POST',
+                    body: window.formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    closeAppointmentModal();
+                    showSuccessMessage(data.message, data.data);
+                    
+                    // Reset main form
+                    document.getElementById('contact-form').reset();
+                    updatePhoneFlag(null);
+                    document.getElementById('group-size-section').classList.add('hidden');
+                } else {
+                    showErrorMessage(data.message);
+                }
+                
+            } catch (error) {
+                console.error('Appointment confirmation error:', error);
+                showErrorMessage('<?php echo $currentLang === 'es' ? 'Error de conexión. Por favor intenta de nuevo o contáctanos por WhatsApp.' : 'Connection error. Please try again or contact us via WhatsApp.'; ?>');
+            } finally {
+                // Reset button state
+                confirmBtn.disabled = false;
+                confirmText.classList.remove('hidden');
+                confirmLoading.classList.add('hidden');
+            }
+        }
+
+        // Verificar disponibilidad para una fecha específica (Modal version)
+        async function checkModalAvailabilityForDate(date) {
+            try {
+                const response = await fetch(`includes/check_availability.php?date=${date}`);
+                const data = await response.json();
+                
+                const availabilityText = document.getElementById('modal-availability-text');
+                
+                if (data.success) {
+                    const available = data.available_slots;
+                    const total = data.total_slots;
+                    const percentage = ((available / total) * 100).toFixed(0);
+                    
+                    const isSpanish = '<?php echo $currentLang; ?>' === 'es';
+                    
+                    if (percentage > 50) {
+                        availabilityText.innerHTML = `<span class="text-green-600">${isSpanish ? 'Buena disponibilidad:' : 'Good availability:'} ${available} de ${total} ${isSpanish ? 'horarios disponibles' : 'time slots available'}</span>`;
+                    } else if (percentage > 20) {
+                        availabilityText.innerHTML = `<span class="text-yellow-600">${isSpanish ? 'Disponibilidad limitada:' : 'Limited availability:'} ${available} de ${total} ${isSpanish ? 'horarios disponibles' : 'time slots available'}</span>`;
+                    } else {
+                        availabilityText.innerHTML = `<span class="text-red-600">${isSpanish ? 'Poca disponibilidad:' : 'Low availability:'} ${available} de ${total} ${isSpanish ? 'horarios disponibles' : 'time slots available'}</span>`;
+                    }
+                    
+                    // Update time chips availability
+                    updateTimeChipsAvailability(data.unavailable_times || []);
+                } else {
+                    const isSpanish = '<?php echo $currentLang; ?>' === 'es';
+                    availabilityText.innerHTML = `<span class="text-gray-600">${isSpanish ? 'No se pudo verificar disponibilidad' : 'Could not verify availability'}</span>`;
+                }
+            } catch (error) {
+                console.error('Error checking availability:', error);
+            }
+        }
+        
+        // Update time chips based on availability
+        function updateTimeChipsAvailability(unavailableTimes) {
+            document.querySelectorAll('.time-chip').forEach(chip => {
+                const time = chip.dataset.time;
+                if (unavailableTimes.includes(time)) {
+                    chip.classList.remove('available');
+                    chip.classList.add('unavailable');
+                    chip.disabled = true;
+                    
+                    // Add unavailable text
+                    const display = chip.querySelector('div');
+                    const isSpanish = '<?php echo $currentLang; ?>' === 'es';
+                    display.innerHTML += `<br><span class="text-xs">${isSpanish ? 'No disponible' : 'Unavailable'}</span>`;
+                } else {
+                    chip.classList.remove('unavailable');
+                    chip.classList.add('available');
+                    chip.disabled = false;
+                    
+                    // Remove any unavailable text
+                    const display = chip.querySelector('div');
+                    const originalText = availableTimes[time];
+                    display.innerHTML = originalText;
+                }
+            });
+        }
+
+        // Verificar disponibilidad de un horario específico (Modal version)
+        async function checkModalSpecificTimeAvailability(date, time) {
+            try {
+                const response = await fetch(`includes/check_availability.php?date=${date}&time=${time}`);
+                const data = await response.json();
+                
+                const availabilityText = document.getElementById('modal-availability-text');
+                const isSpanish = '<?php echo $currentLang; ?>' === 'es';
+                
+                if (data.success) {
+                    if (data.available) {
+                        availabilityText.innerHTML = `<span class="text-green-600">✓ ${isSpanish ? 'Horario disponible' : 'Time slot available'}</span>`;
+                        // Enable confirm button
+                        document.getElementById('confirm-appointment-btn').disabled = false;
+                    } else {
+                        availabilityText.innerHTML = `<span class="text-red-600">✗ ${isSpanish ? 'Horario no disponible' : 'Time slot not available'}</span>`;
+                        
+                        // Mark the selected chip as unavailable
+                        const selectedChip = document.querySelector(`[data-time="${time}"]`);
+                        if (selectedChip) {
+                            selectedChip.classList.remove('selected', 'available');
+                            selectedChip.classList.add('unavailable');
+                            selectedChip.disabled = true;
+                        }
+                        
+                        // Reset selection
+                        selectedTime = null;
+                        document.getElementById('modal-appointment-time').value = '';
+                        
+                        // Disable confirm button
+                        document.getElementById('confirm-appointment-btn').disabled = true;
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking time availability:', error);
+            }
+        }
+
+        // Form submission - intercept to show appointment modal
         document.getElementById('contact-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Show success message
-            document.getElementById('success-message').classList.remove('hidden');
+            // Validate form first
+            if (!this.checkValidity()) {
+                this.reportValidity();
+                return;
+            }
             
-            // Here you would normally send the form data to your backend
-            // For now, we'll just simulate a successful submission
+            // Store form data temporarily
+            window.formData = new FormData(this);
             
-            // Reset form
-            this.reset();
+            // Fill user summary in modal
+            fillUserSummary();
+            
+            // Show appointment modal
+            showAppointmentModal();
         });
 
-        // Close success message
-        function closeSuccessMessage() {
-            document.getElementById('success-message').classList.add('hidden');
+        // Enhanced success message with CRM data
+        function showSuccessMessage(message, data) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/50 z-50 flex items-center justify-center';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl p-8 max-w-md mx-4 text-center animate-slide-up">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-rufina font-bold text-gray-900 mb-4"><?php echo $t['success']['appointment_scheduled']; ?></h3>
+                    <p class="text-gray-600 mb-6">${message}</p>
+                    ${data ? `
+                        <div class="bg-gray-50 rounded-lg p-4 mb-6 text-left">
+                            <h4 class="font-semibold text-gray-900 mb-2">Detalles de tu cita:</h4>
+                            <p class="text-sm text-gray-600">📅 Fecha: ${data.appointment_date}</p>
+                            <p class="text-sm text-gray-600">🕒 Hora: ${data.appointment_time}</p>
+                            <p class="text-sm text-gray-600">✅ Estado: Confirmada</p>
+                        </div>
+                        <div class="bg-blue-50 rounded-lg p-4 mb-6 text-left">
+                            <h4 class="font-semibold text-blue-900 mb-2"><?php echo $t['success']['next_steps']; ?></h4>
+                            <ol class="text-sm text-blue-700 space-y-1">
+                                <li>1. <?php echo $t['success']['step1']; ?></li>
+                                <li>2. <?php echo $t['success']['step2']; ?></li>
+                                <li>3. <?php echo $t['success']['step3']; ?></li>
+                            </ol>
+                        </div>
+                    ` : ''}
+                    <div class="space-y-3">
+                        <button onclick="this.closest('.fixed').remove()" class="w-full bg-kasaami-violet hover:bg-kasaami-dark-violet text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
+                            <?php echo $t['success']['close']; ?>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Close on click outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+
+            // Close on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    modal.remove();
+                }
+            });
         }
 
-        // Close success message when clicking outside
-        document.getElementById('success-message').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeSuccessMessage();
-            }
-        });
+        // Enhanced error message
+        function showErrorMessage(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 animate-slide-up max-w-sm';
+            errorDiv.innerHTML = `
+                <div class="flex items-start">
+                    <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 000 2v4a1 1 0 002 0V7a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                    <div>
+                        <div class="font-medium">${message}</div>
+                        <button onclick="this.closest('.fixed').remove()" class="text-red-200 hover:text-white text-sm mt-1">Cerrar</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(errorDiv);
+            
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.remove();
+                }
+            }, 8000);
+        }
 
-        // Form validation and animations
+        // Toggle group size field based on travel type
+        function toggleGroupSize() {
+            const travelTypeRadios = document.querySelectorAll('input[name="travel_type"]');
+            const groupSizeSection = document.getElementById('group-size-section');
+            const groupSizeInput = document.querySelector('input[name="group_size"]');
+            
+            let isGroupSelected = false;
+            travelTypeRadios.forEach(radio => {
+                if (radio.checked && radio.value === 'grupo') {
+                    isGroupSelected = true;
+                }
+            });
+            
+            if (isGroupSelected) {
+                groupSizeSection.classList.remove('hidden');
+                groupSizeInput.required = true;
+            } else {
+                groupSizeSection.classList.add('hidden');
+                groupSizeInput.required = false;
+                groupSizeInput.value = '';
+            }
+        }
+
+        // Function to detect country from phone number
+        function detectCountryFromPhone(phoneNumber) {
+            const cleaned = phoneNumber.replace(/\D/g, '');
+            
+            // Check 3-digit codes first
+            for (let i = 3; i >= 1; i--) {
+                const code = cleaned.substring(0, i);
+                if (countryCodes[code]) {
+                    return countryCodes[code];
+                }
+            }
+            
+            return null;
+        }
+
+        // Function to show/hide flag
+        function updatePhoneFlag(countryCode) {
+            const flagElement = document.getElementById('phone-flag');
+            const flagImg = document.getElementById('flag-img');
+            const phoneInput = document.getElementById('phone-input');
+            
+            if (countryCode) {
+                flagImg.src = `https://flagcdn.com/w40/${countryCode}.png`;
+                flagImg.alt = countryCode.toUpperCase();
+                flagElement.classList.remove('hidden');
+                flagElement.classList.add('visible');
+                phoneInput.classList.add('with-flag');
+            } else {
+                flagElement.classList.remove('visible');
+                flagElement.classList.add('hidden');
+                phoneInput.classList.remove('with-flag');
+            }
+        }
+
+        // Play video function
+        function playVideo() {
+            // Create modal for video
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4';
+            modal.innerHTML = `
+                <div class="relative max-w-4xl w-full">
+                    <button onclick="this.closest('.fixed').remove()" class="absolute -top-12 right-0 text-white hover:text-gray-300 text-2xl">
+                        ✕
+                    </button>
+                    <div class="aspect-video bg-gray-900 rounded-lg flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            <p class="text-xl">Video de presentación</p>
+                            <p class="text-sm opacity-75 mt-2">Próximamente disponible</p>
+                        </div>
+                    </div>
+                </div>
+                
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Close on click outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+
+        // Form validation enhancements
         const inputs = document.querySelectorAll('.form-input');
         inputs.forEach(input => {
             input.addEventListener('focus', function() {
@@ -574,15 +1444,37 @@ $t = $content[$currentLang];
             
             input.addEventListener('blur', function() {
                 this.parentElement.classList.remove('focused');
+                
+                // Real-time validation
+                if (this.type === 'email' && this.value) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(this.value)) {
+                        this.classList.add('border-red-500');
+                    } else {
+                        this.classList.remove('border-red-500');
+                    }
+                }
+                
+                if (this.type === 'tel' && this.value) {
+                    if (this.value.length < 10) {
+                        this.classList.add('border-red-500');
+                    } else {
+                        this.classList.remove('border-red-500');
+                    }
+                }
             });
         });
 
-        // Set minimum date to today
-        const dateInput = document.querySelector('input[type="date"]');
-        if (dateInput) {
-            const today = new Date().toISOString().split('T')[0];
-            dateInput.setAttribute('min', today);
-        }
+        // Handle escape key to close modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.fixed').forEach(modal => {
+                    if (modal.classList.contains('z-50')) {
+                        modal.remove();
+                    }
+                });
+            }
+        });
 
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -598,24 +1490,10 @@ $t = $content[$currentLang];
             });
         });
 
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-fade-in');
-                }
-            });
-        }, observerOptions);
-
-        // Observe elements for animation
-        document.querySelectorAll('.hover-lift').forEach(el => {
-            observer.observe(el);
-        });
+        // Console log for debugging
+        console.log('Kasaami Contact Form with CRM integration loaded successfully');
+        console.log('Database Status:', '<?php echo $debug_db_status ? "Connected" : "Disconnected"; ?>');
+        console.log('Debug Message:', '<?php echo $debug_db_message; ?>');
     </script>
 </body>
 </html>

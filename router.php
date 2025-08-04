@@ -19,7 +19,7 @@ if (array_key_exists($path, $routes)) {
     return true;
 }
 
-// Si es la raíz, mostrar index
+// Si es la raíz, mostrar index 
 if ($path === '/' || $path === '') {
     include 'index.php';
     return true;
